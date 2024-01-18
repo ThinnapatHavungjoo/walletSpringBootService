@@ -1,0 +1,6 @@
+## YAML Template.
+---
+mail-provider:
+    googlemail:
+    url: smtp.google.com
+    url-port: 456

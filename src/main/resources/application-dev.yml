@@ -1,0 +1,10 @@
+## YAML Template.
+---
+mail-provider:
+    googlemail:
+    url: dev-smtp.google.com
+    url-port: 456
+    
+Spring:
+    profiles:
+        active: dev

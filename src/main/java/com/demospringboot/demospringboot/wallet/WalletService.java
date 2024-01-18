@@ -6,9 +6,11 @@ package com.demospringboot.demospringboot.wallet;
 
 import com.demospringboot.demospringboot.exception.DuplicationException;
 import com.demospringboot.demospringboot.exception.NotFoundException;
+import com.demospringboot.demospringboot.mail.MailService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +25,12 @@ public class WalletService {
             new Wallet(2, "Saving car", "savingcar@gmail.com"),
             new Wallet(3, "Penny wallet", "savingpenny@gmail.com")
     ));
+    
+    private final MailService mailService;
+
+    public WalletService(@Qualifier("googleMail") MailService mailService) {
+        this.mailService = mailService;
+    }
     
     public List<Wallet> getWalletList() {
         return walletList;
@@ -40,9 +48,12 @@ public class WalletService {
                 .max(Integer::compareTo);
         
         int  nextId = maxId.orElse(0) + 1;
-        
+ 
         Wallet wallet = new Wallet(nextId, request.walletName(), request.email());
         walletList.add(wallet);
+        
+        mailService.sendEmail("admin@gmail.com", "New wallet created");
+        
         return wallet;
     }
     
